@@ -66,12 +66,6 @@ class Calculator {
     // TODO Methods
 
 
-
-
-
-
-
-
     int getPrecedence(String op) {
         if ("+-".contains(op)) {
             return 2;
@@ -103,5 +97,18 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     // TODO Methods to tokenize
+    public List<String> tokenize(String s) {
+        List<String> list = new ArrayList<>();
+        String[] arr = s.split(" ");
+
+        for(String e : arr){
+            if(!(e.isEmpty())){
+                list.add(e);
+            }
+        }
+        return list;
+
+    }
+
 
 }

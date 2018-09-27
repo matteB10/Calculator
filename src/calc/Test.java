@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.List;
 
 import static java.lang.System.out;
+import static java.lang.System.setOut;
 
 /**
  * This is a test program for the Calculator (testing a Calculator object)
@@ -24,8 +25,8 @@ class Test {
     void test() {
 
         // Here you could write your own test for any "small" helper methods
-
-
+        String s = "1  + 3   -55";
+        System.out.println(calculator.tokenize(s));
 
         // Uncomment line by line to test
 
@@ -125,7 +126,7 @@ class Test {
 
 
     // ------- Below are helper methods for testing NOTHING to do here -------------------
-
+/*
     // t for tokenize, a very short name, lazy, avoid typing ...
     void t(String expr, String expected) {
         List<String> list = calculator.tokenize(expr);
@@ -148,5 +149,6 @@ class Test {
         double result = calculator.evalPostfix(postfix);
         out.println(result == expected);
     }
+    */
 
 }
