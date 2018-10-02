@@ -138,20 +138,31 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     // TODO Methods to tokenize
-    public ArrayList<String> tokenize(String s) {
-        ArrayList<String> list = new ArrayList<>();
-        String[] arr = s.split(" ");
-
-        for(String e : arr){
-            if(!(e.isEmpty())){
-                list.add(e);
+    public List<String> tokenize(String s) {
+        StringBuilder num = new StringBuilder();
+        List<String> list = new ArrayList<>();
+        //Split string to charArr
+        char[] inputChars = s.toCharArray();
+        for (int i = 0; i < s.length(); i++) {
+            if (inputChars[i] != ' ') {
+                //if current char is digit (and not empty) append to StringBuilder
+                if (Character.isDigit(inputChars[i])) {
+                    num.append(inputChars[i]);
+                } else {
+                    //when operator is reached, transfer StringBuilder to list, empty Stringbuilder, add operand to list
+                    list.add(num.toString());
+                    num.setLength(0);
+                    list.add(Character.toString(inputChars[i]));
+                }
+                //For adding numbers after last operand
+                if (i == s.length() - 1 && Character.isDigit(inputChars[i])) {
+                    list.add(num.toString());
+                }
             }
         }
         return list;
 
-
     }
-
 
 
 }
