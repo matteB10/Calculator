@@ -97,6 +97,12 @@ class Calculator {
                 //Parentheses handling
 
             }
+            //Empty stack at the end
+            if(inputList.indexOf(element) == inputList.size() -1){
+                while (!opStack.isEmpty()) {
+                    postFix.add(opStack.pop());
+                }
+            }
         }
 
         return postFix;
@@ -138,9 +144,9 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     // TODO Methods to tokenize
-    public List<String> tokenize(String s) {
+    public ArrayList<String> tokenize(String s) {
         StringBuilder num = new StringBuilder();
-        List<String> list = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         //Split string to charArr
         char[] inputChars = s.toCharArray();
         for (int i = 0; i < s.length(); i++) {
