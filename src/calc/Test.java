@@ -26,7 +26,9 @@ class Test {
 
         // Here you could write your own test for any "small" helper methods
         String s = "1  + 3   -55";
-        System.out.println(calculator.tokenize(s));
+        ArrayList<String> tArr = calculator.tokenize(s);
+        System.out.println(tArr);
+        System.out.println(calculator.infix2Postfix(tArr));
 
         // Uncomment line by line to test
 

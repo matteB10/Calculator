@@ -65,6 +65,42 @@ class Calculator {
 
     // TODO Methods
 
+    ArrayList<String> infix2Postfix(ArrayList<String> inputList){
+        ArrayList<String> postFix = new ArrayList<>();
+        Deque<String> opStack = new ArrayDeque<>();
+        boolean inParantheses = false;
+
+        for(String element : inputList){
+            //TODO maybe change
+            boolean isDigit = !(OPERATORS.contains(element)) && !("()".contains(element));
+            boolean isOperator = OPERATORS.contains(element);
+
+            if(isDigit){
+                postFix.add(element);
+            }else if(isOperator && getAssociativity(element) == Assoc.LEFT && !inParantheses){
+                //TODO make into method si
+                if(opStack.isEmpty()){
+                    opStack.push(element);
+                }else{
+                    if(greaterPrecedence(element, opStack.peek())){
+                        postFix.add(element);
+                    }else{
+                        while (!opStack.isEmpty()) {
+                            postFix.add(opStack.pop());
+                        }
+                        opStack.push(element);
+                    }
+                }
+            }else if(isOperator && getAssociativity(element) == Assoc.RIGHT && !inParantheses){
+                opStack.push(element);
+            }else{
+                //Parentheses handling
+
+            }
+        }
+
+        return postFix;
+    }
 
     int getPrecedence(String op) {
         if ("+-".contains(op)) {
@@ -76,6 +112,11 @@ class Calculator {
         } else {
             throw new RuntimeException(OP_NOT_FOUND);
         }
+    }
+
+    boolean greaterPrecedence(String element,String stackEl){
+
+        return getPrecedence(element) > getPrecedence(stackEl);
     }
 
     enum Assoc {
@@ -97,8 +138,8 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     // TODO Methods to tokenize
-    public List<String> tokenize(String s) {
-        List<String> list = new ArrayList<>();
+    public ArrayList<String> tokenize(String s) {
+        ArrayList<String> list = new ArrayList<>();
         String[] arr = s.split(" ");
 
         for(String e : arr){
@@ -108,7 +149,9 @@ class Calculator {
         }
         return list;
 
+
     }
+
 
 
 }
