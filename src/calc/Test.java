@@ -25,7 +25,7 @@ class Test {
     void test() {
 
         // Here you could write your own test for any "small" helper methods
-        String s = "1  + 3   -55";
+        String s = "1  + 3   -55 + 10 -";
         System.out.println(calculator.tokenize(s));
 
         // Uncomment line by line to test
