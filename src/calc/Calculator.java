@@ -65,40 +65,46 @@ class Calculator {
 
     // TODO Methods
 
-    ArrayList<String> infix2Postfix(ArrayList<String> inputList){
+    ArrayList<String> infix2Postfix(ArrayList<String> inputList) {
         ArrayList<String> postFix = new ArrayList<>();
         Deque<String> opStack = new ArrayDeque<>();
         boolean inParantheses = false;
 
-        for(String element : inputList){
+        for (String element : inputList) {
             //TODO maybe change
             boolean isDigit = !(OPERATORS.contains(element)) && !("()".contains(element));
             boolean isOperator = OPERATORS.contains(element);
 
-            if(isDigit){
+            if (isDigit) {
                 postFix.add(element);
-            }else if(isOperator && getAssociativity(element) == Assoc.LEFT && !inParantheses){
-                //TODO make into method si
-                if(opStack.isEmpty()){
-                    opStack.push(element);
-                }else{
-                    if(greaterPrecedence(element, opStack.peek())){
-                        postFix.add(element);
-                    }else{
-                        while (!opStack.isEmpty()) {
-                            postFix.add(opStack.pop());
-                        }
+            } else if (isOperator && !inParantheses) {
+                if (getAssociativity(element) == Assoc.LEFT) {
+                    //TODO make into method si
+                    if (opStack.isEmpty()) {
                         opStack.push(element);
+                    } else {
+                        if (greaterPrecedence(element, opStack.peek())) {
+                            opStack.push(element);
+                        } else {
+                            while (!opStack.isEmpty()) {
+                                postFix.add(opStack.pop());
+                            }
+                            opStack.push(element);
+                        }
                     }
+                } else if (getAssociativity(element) == Assoc.RIGHT) {
+                    opStack.push(element);
                 }
-            }else if(isOperator && getAssociativity(element) == Assoc.RIGHT && !inParantheses){
-                opStack.push(element);
-            }else{
+            } else {
                 //Parentheses handling
+                if(element.equals("(")){
+                    inParantheses = true;
+                    
+                }
 
             }
             //Empty stack at the end
-            if(inputList.indexOf(element) == inputList.size() -1){
+            if (inputList.lastIndexOf(element) == inputList.size() - 1) {
                 while (!opStack.isEmpty()) {
                     postFix.add(opStack.pop());
                 }
@@ -120,7 +126,7 @@ class Calculator {
         }
     }
 
-    boolean greaterPrecedence(String element,String stackEl){
+    boolean greaterPrecedence(String element, String stackEl) {
 
         return getPrecedence(element) > getPrecedence(stackEl);
     }
