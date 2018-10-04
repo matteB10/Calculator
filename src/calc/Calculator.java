@@ -68,9 +68,11 @@ class Calculator {
     ArrayList<String> infix2Postfix(ArrayList<String> inputList) {
         ArrayList<String> postFix = new ArrayList<>();
         Deque<String> opStack = new ArrayDeque<>();
+        int counter = 0;
         boolean inParantheses = false;
 
         for (String element : inputList) {
+            counter++;
             //TODO maybe change
             boolean isDigit = !(OPERATORS.contains(element)) && !("()".contains(element));
             boolean isOperator = OPERATORS.contains(element);
@@ -94,15 +96,15 @@ class Calculator {
 
             }
             //clears what's left in stack at the end (and adds to list)
-            popStack(inputList, postFix, opStack, element);
+            popStack(inputList, postFix, opStack, counter);
         }
 
         return postFix;
     }
 
-    private void popStack(ArrayList<String> inputList, ArrayList<String> postFix, Deque<String> opStack, String element) {
+    private void popStack(ArrayList<String> inputList, ArrayList<String> postFix, Deque<String> opStack, int counter) {
         //Empty stack at the end
-        if (inputList.lastIndexOf(element) == inputList.size() - 1) {
+        if (counter >= inputList.size() - 1) {
             while (!opStack.isEmpty()) {
                 postFix.add(opStack.pop());
             }
