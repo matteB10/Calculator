@@ -69,30 +69,25 @@ class Calculator {
         ArrayList<String> postFix = new ArrayList<>();
         Deque<String> opStack = new ArrayDeque<>();
         int counter = 0;
-        boolean inParantheses = false;
 
         for (String element : inputList) {
             counter++;
             //TODO maybe change
             boolean isDigit = !(OPERATORS.contains(element)) && !("()".contains(element));
-            boolean isOperator = OPERATORS.contains(element);
+            boolean isOperator = OPERATORS.contains(element) ;
 
             if (isDigit) {
                 postFix.add(element);
-            } else if (isOperator && !inParantheses) {
+            } else if (isOperator) {
                 if (getAssociativity(element) == Assoc.LEFT) {
                     //TODO make into method si
                     handleLeftOp(postFix, opStack, element);
                 } else if (getAssociativity(element) == Assoc.RIGHT) {
                     opStack.push(element);
                 }
-                //if operator and is in parentheses
+                //if parentheses
             } else {
-                //Parentheses handling
-                if (element.equals("(")) {
-                    inParantheses = true;
-
-                }
+                handleParentheses(postFix, opStack, element);
 
             }
             //clears what's left in stack at the end (and adds to list)
@@ -102,6 +97,21 @@ class Calculator {
         }
 
         return postFix;
+    }
+
+    private void handleParentheses(ArrayList<String> postFix, Deque<String> opStack, String element) {
+        //Parentheses handling
+        if (element.equals("(")) {
+            opStack.push(element);
+
+        } else {
+            while (opStack.peek() != "(") {
+                postFix.add(opStack.pop());
+            }
+            opStack.pop();
+
+            //Poppa allt till startparantes
+        }
     }
 
     private void popStack(ArrayList<String> inputList, ArrayList<String> postFix, Deque<String> opStack, int counter) {
@@ -115,10 +125,10 @@ class Calculator {
         if (opStack.isEmpty()) {
             opStack.push(element);
         } else {
-            if (greaterPrecedence(element, opStack.peek())) {
+            if (opStack.peek().equals("(") || greaterPrecedence(element, opStack.peek())) {
                 opStack.push(element);
             } else {
-                while (!opStack.isEmpty()) {
+                while (!opStack.isEmpty() && !(opStack.peek().equals("("))) {
                     postFix.add(opStack.pop());
                 }
                 opStack.push(element);
@@ -174,9 +184,14 @@ class Calculator {
                     num.append(inputChars[i]);
                 } else {
                     //when operator is reached, transfer StringBuilder to list, empty Stringbuilder, add operand to list
-                    list.add(num.toString());
-                    num.setLength(0);
-                    list.add(Character.toString(inputChars[i]));
+                    if(num.length() == 0) {
+                        list.add(Character.toString(inputChars[i]));
+
+                    }else{
+                        list.add(num.toString());
+                        num.setLength(0);
+                        list.add(Character.toString(inputChars[i]));
+                    }
                 }
                 //For adding numbers after last operand
                 if (i == s.length() - 1 && Character.isDigit(inputChars[i])) {
