@@ -96,7 +96,9 @@ class Calculator {
 
             }
             //clears what's left in stack at the end (and adds to list)
-            popStack(inputList, postFix, opStack, counter);
+            if (counter >= inputList.size()) {
+                popStack(inputList, postFix, opStack, counter);
+            }
         }
 
         return postFix;
@@ -104,10 +106,8 @@ class Calculator {
 
     private void popStack(ArrayList<String> inputList, ArrayList<String> postFix, Deque<String> opStack, int counter) {
         //Empty stack at the end
-        if (counter >= inputList.size() - 1) {
-            while (!opStack.isEmpty()) {
-                postFix.add(opStack.pop());
-            }
+        while (!opStack.isEmpty()) {
+            postFix.add(opStack.pop());
         }
     }
 
