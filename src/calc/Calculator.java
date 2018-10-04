@@ -80,38 +80,48 @@ class Calculator {
             } else if (isOperator && !inParantheses) {
                 if (getAssociativity(element) == Assoc.LEFT) {
                     //TODO make into method si
-                    if (opStack.isEmpty()) {
-                        opStack.push(element);
-                    } else {
-                        if (greaterPrecedence(element, opStack.peek())) {
-                            opStack.push(element);
-                        } else {
-                            while (!opStack.isEmpty()) {
-                                postFix.add(opStack.pop());
-                            }
-                            opStack.push(element);
-                        }
-                    }
+                    handleLeftOp(postFix, opStack, element);
                 } else if (getAssociativity(element) == Assoc.RIGHT) {
                     opStack.push(element);
                 }
+                //if operator and is in parentheses
             } else {
                 //Parentheses handling
-                if(element.equals("(")){
+                if (element.equals("(")) {
                     inParantheses = true;
-                    
+
                 }
 
             }
-            //Empty stack at the end
-            if (inputList.lastIndexOf(element) == inputList.size() - 1) {
-                while (!opStack.isEmpty()) {
-                    postFix.add(opStack.pop());
-                }
-            }
+            //clears what's left in stack at the end (and adds to list)
+            popStack(inputList, postFix, opStack, element);
         }
 
         return postFix;
+    }
+
+    private void popStack(ArrayList<String> inputList, ArrayList<String> postFix, Deque<String> opStack, String element) {
+        //Empty stack at the end
+        if (inputList.lastIndexOf(element) == inputList.size() - 1) {
+            while (!opStack.isEmpty()) {
+                postFix.add(opStack.pop());
+            }
+        }
+    }
+
+    private void handleLeftOp(ArrayList<String> postFix, Deque<String> opStack, String element) {
+        if (opStack.isEmpty()) {
+            opStack.push(element);
+        } else {
+            if (greaterPrecedence(element, opStack.peek())) {
+                opStack.push(element);
+            } else {
+                while (!opStack.isEmpty()) {
+                    postFix.add(opStack.pop());
+                }
+                opStack.push(element);
+            }
+        }
     }
 
     int getPrecedence(String op) {
