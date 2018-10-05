@@ -32,10 +32,10 @@ class Calculator {
         if (expr.length() == 0) {
             return NaN;
         }
-        // TODO List<String> tokens = tokenize(expr);
-        // TODO List<String> postfix = infix2Postfix(tokens);
-        // TODO double result = evalPostfix(postfix);
-        return 0; // result;
+        ArrayList<String> tokens = tokenize(expr);
+        ArrayList<String> postfix = infix2Postfix(tokens);
+        double result = evalPostFix(postfix);
+        return result; // result;
     }
 
     // ------  Evaluate RPN expression -------------------
