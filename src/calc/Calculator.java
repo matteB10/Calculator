@@ -202,5 +202,22 @@ class Calculator {
 
     }
 
+    public double evalPostFix(ArrayList<String> postfix) {
+        double number;
+        Deque<Double> stack = new ArrayDeque<>();
+        for (String element : postfix) {
+            if (OPERATORS.contains(element)) {
+                double first = stack.pop();
+                double second = stack.pop();
+                stack.push(applyOperator(element, first, second));
+
+
+            } else {
+                number = Double.valueOf(element);
+                stack.push(number);
+            }
+        }
+        return stack.pop();
+    }
 
 }

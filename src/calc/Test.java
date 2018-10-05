@@ -11,7 +11,7 @@ import static java.lang.System.setOut;
 /**
  * This is a test program for the Calculator (testing a Calculator object)
  * It should output true for everything
- *
+ * <p>
  * Right click and run ...
  */
 class Test {
@@ -29,6 +29,14 @@ class Test {
         ArrayList<String> tArr = calculator.tokenize(s);
         System.out.println(tArr);
         System.out.println(calculator.infix2Postfix(tArr));
+        ArrayList<String> calc = calculator.infix2Postfix(tArr);
+        double d = calculator.evalPostFix(calc);
+        System.out.println(d);
+
+        int digit;
+        String s2 = "54";
+        digit = Integer.valueOf(s2);
+        System.out.println(digit == 54);
 
         // Uncomment line by line to test
 
