@@ -74,7 +74,7 @@ class Calculator {
             counter++;
             //TODO maybe change
             boolean isDigit = !(OPERATORS.contains(element)) && !("()".contains(element));
-            boolean isOperator = OPERATORS.contains(element) ;
+            boolean isOperator = OPERATORS.contains(element);
 
             if (isDigit) {
                 postFix.add(element);
@@ -105,11 +105,10 @@ class Calculator {
             opStack.push(element);
 
         } else {
-            while (opStack.peek() != "(") {
+            while (!(opStack.peek().equals("("))) {
                 postFix.add(opStack.pop());
             }
             opStack.pop();
-
             //Poppa allt till startparantes
         }
     }
@@ -184,10 +183,10 @@ class Calculator {
                     num.append(inputChars[i]);
                 } else {
                     //when operator is reached, transfer StringBuilder to list, empty Stringbuilder, add operand to list
-                    if(num.length() == 0) {
+                    if (num.length() == 0) {
                         list.add(Character.toString(inputChars[i]));
 
-                    }else{
+                    } else {
                         list.add(num.toString());
                         num.setLength(0);
                         list.add(Character.toString(inputChars[i]));

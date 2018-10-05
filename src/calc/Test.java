@@ -25,7 +25,7 @@ class Test {
     void test() {
 
         // Here you could write your own test for any "small" helper methods
-        String s = "(5-3+2)*3";
+        String s = "(5 -3*4)*(2 +(3^2))";
         ArrayList<String> tArr = calculator.tokenize(s);
         System.out.println(tArr);
         System.out.println(calculator.infix2Postfix(tArr));
