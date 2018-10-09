@@ -73,9 +73,9 @@ class Calculator {
         for (String element : inputList) {
             counter++;
             //TODO maybe change
-            boolean isDigit = Integer.valueOf(element) instanceof Integer;
             boolean isParen = ("()".contains(element));
             boolean isOperator = OPERATORS.contains(element);
+            boolean isDigit = !isParen && !isOperator;
 
             if (isDigit) {
                 postFix.add(element);
