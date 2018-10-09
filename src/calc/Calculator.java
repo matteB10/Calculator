@@ -65,7 +65,7 @@ class Calculator {
 
     // TODO Methods
 
-    ArrayList<String> infix2Postfix(ArrayList<String> inputList) {
+    ArrayList<String> infix2Postfix(ArrayList<String> inputList){
         ArrayList<String> postFix = new ArrayList<>();
         Deque<String> opStack = new ArrayDeque<>();
         int counter = 0;
@@ -73,7 +73,8 @@ class Calculator {
         for (String element : inputList) {
             counter++;
             //TODO maybe change
-            boolean isDigit = !(OPERATORS.contains(element)) && !("()".contains(element));
+            boolean isDigit = Integer.valueOf(element) instanceof Integer;
+            boolean isParen = ("()".contains(element));
             boolean isOperator = OPERATORS.contains(element);
 
             if (isDigit) {
@@ -86,7 +87,7 @@ class Calculator {
                     opStack.push(element);
                 }
                 //if parentheses
-            } else {
+            } else if(isParen){
                 handleParentheses(postFix, opStack, element);
 
             }
@@ -99,17 +100,21 @@ class Calculator {
         return postFix;
     }
 
-    private void handleParentheses(ArrayList<String> postFix, Deque<String> opStack, String element) {
+    private void handleParentheses(ArrayList<String> postFix, Deque<String> opStack, String element){
         //Parentheses handling
         if (element.equals("(")) {
             opStack.push(element);
 
-        } else {
+        } else if(element.equals(")")){
             while (!(opStack.peek().equals("("))) {
                 postFix.add(opStack.pop());
             }
             opStack.pop();
             //Poppa allt till startparantes
+        }
+        else{
+            //not digit, not known operator and not a parantheses.
+            throw new RuntimeException(OP_NOT_FOUND);
         }
     }
 
@@ -177,10 +182,20 @@ class Calculator {
         //Split string to charArr
         char[] inputChars = s.toCharArray();
         for (int i = 0; i < s.length(); i++) {
+            //if current char is digit (and not empty) append to StringBuilder
             if (inputChars[i] != ' ') {
-                //if current char is digit (and not empty) append to StringBuilder
+                try {
+                    boolean op = OPERATORS.contains(list.get(list.size() - 1));
+                    boolean par = "()".contains(Character.toString(inputChars[i]));
+                }
+                catch (Exception e){
+
+                }
+
                 if (Character.isDigit(inputChars[i])) {
                     num.append(inputChars[i]);
+
+                    //if operator
                 } else {
                     //when operator is reached, transfer StringBuilder to list, empty Stringbuilder, add operand to list
                     if (num.length() == 0) {
