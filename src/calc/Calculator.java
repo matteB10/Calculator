@@ -2,10 +2,11 @@ package calc;
 
 import java.util.*;
 
+import static calc.CheckParen.checkParentheses;
 import static java.lang.Double.NaN;
 import static java.lang.Math.pow;
 
-
+//Paggan är cool B)
 /*
  *   A calculator for rather simple arithmetic expressions
  *
@@ -35,7 +36,9 @@ class Calculator {
         ArrayList<String> tokens = tokenize(expr);
 
         //Check for invalid parentheses
-        //checkParen(tokens);
+        if(!checkParentheses(tokens)){
+            throw new RuntimeException(MISSING_OPERATOR);
+        }
 
         ArrayList<String> postfix = infix2Postfix(tokens);
         double result = evalPostFix(postfix);
@@ -44,8 +47,7 @@ class Calculator {
 
     // ------  Evaluate RPN expression -------------------
 
-    // TODO Eval methods
-
+//Call expression depending on input (Jocke wrote this method)
     double applyOperator(String op, double d1, double d2) {
         switch (op) {
             case "+":
@@ -66,8 +68,7 @@ class Calculator {
     }
 
     // ------- Infix 2 Postfix ------------------------
-
-    // TODO Methods
+//Convert
 
     ArrayList<String> infix2Postfix(ArrayList<String> inputList){
         ArrayList<String> postFix = new ArrayList<>();
@@ -76,7 +77,7 @@ class Calculator {
 
         for (String element : inputList) {
             counter++;
-            //TODO maybe change
+
             boolean isParen = ("()".contains(element));
             boolean isOperator = OPERATORS.contains(element);
             boolean isDigit = !isParen && !isOperator;
@@ -85,7 +86,6 @@ class Calculator {
                 postFix.add(element);
             } else if (isOperator) {
                 if (getAssociativity(element) == Assoc.LEFT) {
-                    //TODO make into method si
                     handleLeftOp(postFix, opStack, element);
                 } else if (getAssociativity(element) == Assoc.RIGHT) {
                     opStack.push(element);

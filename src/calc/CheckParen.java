@@ -1,9 +1,12 @@
 package calc;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 
 import static java.lang.System.out;
+import static java.lang.System.setOut;
 
 /*
  *
@@ -17,27 +20,20 @@ import static java.lang.System.out;
  *
  */
 public class CheckParen {
-/*
-    public static void main(String[] args) {
-        new Ex4CheckParen().program();
+
+    /*public static void main(String[] args) {
+        new CheckParen().program();
     }
 
     void program() {
-        // All should be true
-        out.println(checkParentheses("()"));
-        out.println(checkParentheses("(()())"));
-        out.println(!checkParentheses("(()))")); // Unbalanced
-        out.println(!checkParentheses("((())")); // Unbalanced
+        ArrayList<String> test = new ArrayList<String>();
+        Collections.addAll(test,")","abs","abc",")","asd",")");
+        checkParentheses(test);
+    }*/
 
-        out.println(checkParentheses("({})"));
-        out.println(!checkParentheses("({)}"));  // Bad nesting
-        out.println(checkParentheses("({} [()] ({}))"));
-        out.println(!checkParentheses("({} [() ({)})"));  // Unbalanced and bad nesting
-    }
-*/
-    private boolean isOpeningParenthesis(char c) {
+    private static boolean isOpeningParenthesis(char c) {
         boolean parenthesis;
-        if (c == '{' || c == '[' || c == '(') {
+        if (c == '(') {
             parenthesis = true;
         } else {
             parenthesis = false;
@@ -45,11 +41,11 @@ public class CheckParen {
         return parenthesis;
     }
 
-    public boolean checkParentheses(String string) {
+    public static boolean checkParentheses(ArrayList<String> inputList) {
         Deque<Character> stack = new ArrayDeque<>();
         boolean balanced = false;
 
-        char[] letters = string.toCharArray();
+        char[] letters = onlyParen(inputList);
         for (int i = 0; i < letters.length; i++) {
             if (isOpeningParenthesis(letters[i])) {
                 stack.push(letters[i]);
@@ -69,7 +65,25 @@ public class CheckParen {
         return stack.isEmpty();
     }
 
-    boolean matchesStack(char c, char topOfStack) {
+    private static char[] onlyParen(ArrayList<String> inputList){
+        ArrayList<Character> returnList = new ArrayList<>();
+        String tempString;
+        char[] charArray;
+
+        for(String element : inputList){
+            if(("()".contains(element))){
+                returnList.add(element.charAt(0));
+            }
+        }
+        charArray = new char[returnList.size()];
+        for(int i = 0; i < charArray.length; i++){
+            charArray[i] = returnList.get(i);
+        }
+
+        return charArray;
+    }
+
+    private static boolean matchesStack(char c, char topOfStack) {
         if (c == ')' && topOfStack == '(') {
             return true;
         } else if (c == ']' && topOfStack == '[') {
@@ -81,19 +95,5 @@ public class CheckParen {
         }
     }
 
-    // This is interesting because have to return, but what if no match?!?
-    char matching(char ch) {
-        //char c =  must initialize but to what?!
-        switch (ch) {
-            case ')':
-                return '(';  // c = '('
-            case ']':
-                return '[';
-            case '}':
-                return '{';
-            default:
-                // return c;
-                throw new IllegalArgumentException("No match found");
-        }
-    }
+
 }
