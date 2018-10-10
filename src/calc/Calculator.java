@@ -199,14 +199,7 @@ class Calculator {
                     //if operator
                 } else {
                     //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder, add operand to tokenList
-                    if (numBuilder.length() == 0) {
-                        tokenList.add(Character.toString(inputChars[i]));
-
-                    } else {
-                        tokenList.add(numBuilder.toString());
-                        numBuilder.setLength(0);
-                        tokenList.add(Character.toString(inputChars[i]));
-                    }
+                    addToTokenlist(numBuilder, tokenList, inputChars[i]);
                 }
                 //For adding numbers after last operand
                 if (i == s.length() - 1 && Character.isDigit(inputChars[i])) {
@@ -217,6 +210,17 @@ class Calculator {
 
         return tokenList;
 
+    }
+
+    private void addToTokenlist(StringBuilder numBuilder, ArrayList<String> tokenList, char element) {
+        if (numBuilder.length() == 0) {
+            tokenList.add(Character.toString(element));
+
+        } else {
+            tokenList.add(numBuilder.toString());
+            numBuilder.setLength(0);
+            tokenList.add(Character.toString(element));
+        }
     }
 
     public double evalPostFix(ArrayList<String> postfix) {
