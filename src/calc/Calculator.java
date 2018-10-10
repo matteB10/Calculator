@@ -35,7 +35,7 @@ class Calculator {
         ArrayList<String> tokens = tokenize(expr);
 
         //Check for invalid parentheses
-        checkParen(tokens);
+        //checkParen(tokens);
 
         ArrayList<String> postfix = infix2Postfix(tokens);
         double result = evalPostFix(postfix);
