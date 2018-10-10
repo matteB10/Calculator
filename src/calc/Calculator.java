@@ -80,9 +80,17 @@ class Calculator {
 
             boolean isParen = ("()".contains(element));
             boolean isOperator = OPERATORS.contains(element);
-            boolean isDigit = !isParen && !isOperator;
+            int tempNum = 0;
+            boolean isNumber;
 
-            if (isDigit) {
+            try {
+                tempNum = Integer.parseInt(element);
+                isNumber = true;
+            }catch(Exception e){
+                isNumber = false;
+            }
+
+            if (isNumber) {
                 postFix.add(element);
             } else if (isOperator) {
                 if (getAssociativity(element) == Assoc.LEFT) {
@@ -94,6 +102,8 @@ class Calculator {
             } else if(isParen){
                 handleParentheses(postFix, opStack, element);
 
+            }else{
+                throw new RuntimeException(MISSING_OPERAND);
             }
             //clears what's left in stack at the end (and adds to list)
             if (counter >= inputList.size()) {
@@ -133,9 +143,11 @@ class Calculator {
         if (opStack.isEmpty()) {
             opStack.push(element);
         } else {
+            //If element on stack is a parentheses or has great precedence, push.
             if (opStack.peek().equals("(") || greaterPrecedence(element, opStack.peek())) {
                 opStack.push(element);
             } else {
+                //Pops stack all the way to start parentheses (if there is one) + adds to postfix
                 while (!opStack.isEmpty() && !(opStack.peek().equals("("))) {
                     postFix.add(opStack.pop());
                 }
@@ -189,6 +201,7 @@ class Calculator {
         for (int i = 0; i < s.length(); i++) {
 
             if (inputChars[i] != ' ') {
+
                 //Errorhandling
                 checkMissingOperand(i,inputChars);
 
@@ -246,7 +259,6 @@ class Calculator {
 
         if (i > 0) {
             boolean lastIsOp = OPERATORS.contains(Character.toString(inputChars[i-1]));
-            boolean lastIsParen = "()".contains(Character.toString(inputChars[i-1]));
             //if two operators in a row, or expression start or ends with an operator.
             if((lastIsOp && currentIsOp) || (currentIsOp && i == inputChars.length -1)){
                 throw new RuntimeException(MISSING_OPERAND);
@@ -255,6 +267,7 @@ class Calculator {
         }else if(currentIsOp){
             throw new RuntimeException(MISSING_OPERAND);
         }
+
     }
 
 
