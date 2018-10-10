@@ -155,7 +155,7 @@ class Calculator {
             }
         }
     }
-
+    //Return precedence of operator. Exception is never thrown.
     int getPrecedence(String op) {
         if ("+-".contains(op)) {
             return 2;
@@ -168,6 +168,8 @@ class Calculator {
         }
     }
 
+    //Used to check if precedence of current operator is greater than
+    //the operator we comparing with.
     boolean greaterPrecedence(String element, String stackEl) {
 
         return getPrecedence(element) > getPrecedence(stackEl);
@@ -191,7 +193,7 @@ class Calculator {
 
     // ---------- Tokenize -----------------------
 
-    // TODO Methods to tokenize
+
     public ArrayList<String> tokenize(String s) {
         StringBuilder numBuilder = new StringBuilder();
         ArrayList<String> tokenList = new ArrayList<>();
@@ -211,7 +213,8 @@ class Calculator {
 
                     //if operator
                 } else {
-                    //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder, add operand to tokenList
+                    //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder.
+                    //add operand to tokenList
                     addToTokenlist(numBuilder, tokenList, inputChars[i]);
                 }
                 //For adding numbers after last operand
@@ -224,40 +227,51 @@ class Calculator {
         return tokenList;
 
     }
-
+    //Called in method tokenize, used for converting chars to a list of strings.
+    //Numbers with more than 1 digit need to concatenate, done with stringBuilder before adding to list.
     private void addToTokenlist(StringBuilder numBuilder, ArrayList<String> tokenList, char element) {
         if (numBuilder.length() == 0) {
             tokenList.add(Character.toString(element));
-
         } else {
             tokenList.add(numBuilder.toString());
             numBuilder.setLength(0);
             tokenList.add(Character.toString(element));
         }
     }
-
+    //Do all calculations
+    //method parameter: a list with the expression in postfix order
+    //returns the result (a double) of the calculation.
     public double evalPostFix(ArrayList<String> postfix) {
         double number;
         Deque<Double> stack = new ArrayDeque<>();
         for (String element : postfix) {
+            //if current element in expression is an operator
             if (OPERATORS.contains(element)) {
                 double first = stack.pop();
                 double second = stack.pop();
+                //calculate the result of 'first' and 'second' with 'element' as operator
+                //push result back to stack
                 stack.push(applyOperator(element, first, second));
 
-
+            //if current element in expression is a number, push it to stack
             } else {
                 number = Double.valueOf(element);
                 stack.push(number);
             }
         }
+        //return result of calculation
         return stack.pop();
     }
 
+
+    //Check if input is invalid and operand is missing, throws Exception if
+    //two operators in sequence or if expression starts/ends with operator.
     void checkMissingOperand(int i, char[] inputChars){
+        //check if current element is operator
         boolean currentIsOp = OPERATORS.contains(Character.toString(inputChars[i]));
 
         if (i > 0) {
+            //Check if last element was operator
             boolean lastIsOp = OPERATORS.contains(Character.toString(inputChars[i-1]));
             //if two operators in a row, or expression start or ends with an operator.
             if((lastIsOp && currentIsOp) || (currentIsOp && i == inputChars.length -1)){
@@ -267,16 +281,6 @@ class Calculator {
         }else if(currentIsOp){
             throw new RuntimeException(MISSING_OPERAND);
         }
-
-    }
-
-
-    void checkParen(String string){
-        Deque<Character> stack = new ArrayDeque<>();
-        boolean balanced = false;
-
-        char[] parents = string.toCharArray();
-
 
     }
 }
