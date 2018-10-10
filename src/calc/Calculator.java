@@ -33,6 +33,10 @@ class Calculator {
             return NaN;
         }
         ArrayList<String> tokens = tokenize(expr);
+
+        //Check for invalid parentheses
+        checkParen(tokens);
+
         ArrayList<String> postfix = infix2Postfix(tokens);
         double result = evalPostFix(postfix);
         return result; // result;
@@ -185,19 +189,9 @@ class Calculator {
         for (int i = 0; i < s.length(); i++) {
 
             if (inputChars[i] != ' ') {
-                boolean currentIsOp = OPERATORS.contains(Character.toString(inputChars[i]));
+                //Errorhandling
+                checkMissingOperand(i,inputChars);
 
-                if (i > 0) {
-                    boolean lastIsOp = OPERATORS.contains(Character.toString(inputChars[i-1]));
-                    boolean lastIsParen = "()".contains(Character.toString(inputChars[i-1]));
-                    //if two operators in a row, or expression start or ends with an operator.
-                    if((lastIsOp && currentIsOp) || (currentIsOp && i == s.length() -1)){
-                        throw new RuntimeException(MISSING_OPERAND);
-                    }
-
-                }else if(currentIsOp){
-                    throw new RuntimeException(MISSING_OPERAND);
-                }
                 //if current char is digit (and not empty) append to StringBuilder
                 if (Character.isDigit(inputChars[i])) {
                     numBuilder.append(inputChars[i]);
@@ -220,6 +214,7 @@ class Calculator {
                 }
             }
         }
+
         return tokenList;
 
     }
@@ -240,6 +235,22 @@ class Calculator {
             }
         }
         return stack.pop();
+    }
+
+    void checkMissingOperand(int i, char[] inputChars){
+        boolean currentIsOp = OPERATORS.contains(Character.toString(inputChars[i]));
+
+        if (i > 0) {
+            boolean lastIsOp = OPERATORS.contains(Character.toString(inputChars[i-1]));
+            boolean lastIsParen = "()".contains(Character.toString(inputChars[i-1]));
+            //if two operators in a row, or expression start or ends with an operator.
+            if((lastIsOp && currentIsOp) || (currentIsOp && i == inputChars.length -1)){
+                throw new RuntimeException(MISSING_OPERAND);
+            }
+
+        }else if(currentIsOp){
+            throw new RuntimeException(MISSING_OPERAND);
+        }
     }
 
 }
