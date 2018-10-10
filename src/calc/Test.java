@@ -25,7 +25,7 @@ class Test {
     void test() {
 
         // Here you could write your own test for any "small" helper methods
-        String s = "(5 -3*4)*(2 +(3^2))";
+        /**String s = "(5 -3*4)*(2 +(3^2))";
         ArrayList<String> tArr = calculator.tokenize(s);
         System.out.println(tArr);
         System.out.println(calculator.infix2Postfix(tArr));
@@ -37,6 +37,8 @@ class Test {
         String s2 = "54";
         digit = Integer.valueOf(s2);
         System.out.println(digit == 54);
+         */
+        System.out.println(Integer.parseInt("54"));
 
         // Uncomment line by line to test
 

@@ -177,43 +177,50 @@ class Calculator {
 
     // TODO Methods to tokenize
     public ArrayList<String> tokenize(String s) {
-        StringBuilder num = new StringBuilder();
-        ArrayList<String> list = new ArrayList<>();
+        StringBuilder numBuilder = new StringBuilder();
+        ArrayList<String> tokenList = new ArrayList<>();
         //Split string to charArr
+        s = s.trim();
         char[] inputChars = s.toCharArray();
         for (int i = 0; i < s.length(); i++) {
-            //if current char is digit (and not empty) append to StringBuilder
+
             if (inputChars[i] != ' ') {
-                try {
-                    boolean op = OPERATORS.contains(list.get(list.size() - 1));
-                    boolean par = "()".contains(Character.toString(inputChars[i]));
-                }
-                catch (Exception e){
+                boolean currentIsOp = OPERATORS.contains(Character.toString(inputChars[i]));
 
-                }
+                if (i > 0) {
+                    boolean lastIsOp = OPERATORS.contains(Character.toString(inputChars[i-1]));
+                    boolean lastIsParen = "()".contains(Character.toString(inputChars[i-1]));
+                    //if two operators in a row, or expression start or ends with an operator.
+                    if((lastIsOp && currentIsOp) || (currentIsOp && i == s.length() -1)){
+                        throw new RuntimeException(MISSING_OPERAND);
+                    }
 
+                }else if(currentIsOp){
+                    throw new RuntimeException(MISSING_OPERAND);
+                }
+                //if current char is digit (and not empty) append to StringBuilder
                 if (Character.isDigit(inputChars[i])) {
-                    num.append(inputChars[i]);
+                    numBuilder.append(inputChars[i]);
 
                     //if operator
                 } else {
-                    //when operator is reached, transfer StringBuilder to list, empty Stringbuilder, add operand to list
-                    if (num.length() == 0) {
-                        list.add(Character.toString(inputChars[i]));
+                    //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder, add operand to tokenList
+                    if (numBuilder.length() == 0) {
+                        tokenList.add(Character.toString(inputChars[i]));
 
                     } else {
-                        list.add(num.toString());
-                        num.setLength(0);
-                        list.add(Character.toString(inputChars[i]));
+                        tokenList.add(numBuilder.toString());
+                        numBuilder.setLength(0);
+                        tokenList.add(Character.toString(inputChars[i]));
                     }
                 }
                 //For adding numbers after last operand
                 if (i == s.length() - 1 && Character.isDigit(inputChars[i])) {
-                    list.add(num.toString());
+                    tokenList.add(numBuilder.toString());
                 }
             }
         }
-        return list;
+        return tokenList;
 
     }
 

@@ -27,6 +27,7 @@ class REPL {
         while (true) {
             out.print("> ");
             String input = scan.nextLine();
+            //String input = "1+ 34 *3";
             try {
                 double result = calculator.eval(input);
                 out.println(result);
@@ -34,7 +35,9 @@ class REPL {
                 out.println(e.getMessage());
             }
         }
+
     }
+
 
 
 }
