@@ -16,7 +16,7 @@ import static java.lang.System.setOut;
  */
 class Test {
 
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         new Test().test();
     }
 

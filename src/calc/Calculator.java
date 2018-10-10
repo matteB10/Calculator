@@ -257,4 +257,13 @@ class Calculator {
         }
     }
 
+
+    void checkParen(String string){
+        Deque<Character> stack = new ArrayDeque<>();
+        boolean balanced = false;
+
+        char[] parents = string.toCharArray();
+
+
+    }
 }
