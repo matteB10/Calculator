@@ -1,3 +1,4 @@
+/*
 package calc;
 
 import java.util.ArrayDeque;
@@ -14,6 +15,7 @@ import static java.lang.System.setOut;
  * <p>
  * Right click and run ...
  */
+/*
 class Test {
 
      public static void main(String[] args) {
@@ -37,7 +39,7 @@ class Test {
         String s2 = "54";
         digit = Integer.valueOf(s2);
         System.out.println(digit == 54);
-         */
+         *//*
         System.out.println(Integer.parseInt("54"));
 
         // Uncomment line by line to test
@@ -159,3 +161,4 @@ class Test {
 
 
 }
+*/

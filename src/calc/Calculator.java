@@ -195,40 +195,60 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     public ArrayList<String> controlInput(char[] tokens){
+        //StringBuilder numBuilder = new StringBuilder();
+        //ArrayList<String> tokenList = new ArrayList<>();
         StringBuilder numBuilder = new StringBuilder();
-        ArrayList<String> tokenList = new ArrayList<>();
-        //Split string to charArr
-
-        for (int i = 0; i < tokens.length; i++) {
 
 
-            //if current char is digit (and not empty) append to StringBuilder
-            if (Character.isDigit(tokens[i])) {
+        boolean readOperand = false;
+        boolean readOperator = false;
+        int blankSpaces = 0;
+        int numOperators = 0;
+        ArrayList<String> outputList = new ArrayList<>();
 
+        for(int i = 0; i < tokens.length; i++){
+            char ch = tokens[i];
 
-
-                numBuilder.append(tokens[i]);
-                //if operator
-            }else if(Character.toString(tokens[i]).equals(" ")){
-
-
-            } else {
-
-
-                //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder.
-                //add operand to tokenList
-                addToTokenlist(numBuilder, tokenList, tokens[i]);
+            //Two digits with space in-between without operator
+            if (readOperand && blankSpaces > 0 && Character.isDigit(ch)) {
+                throw new RuntimeException(MISSING_OPERATOR);
+            }
+            //If first character is operator
+            if (i == 1 && readOperator) {
+                throw new RuntimeException(MISSING_OPERAND);
+            }
+            //Set readOperand to false, if false after loop exit, missing operand after last operator i.e (1 + 2 +)
+            if (OPERATORS.contains(Character.toString(ch))) {
+                readOperand = false;
+                readOperator = true;
+                numOperators++;
+                //Need to add digit to Stringbuilder, only does this if two digits right after one another, needed to create numbers with more than one digit
+                outputList.add(numBuilder.toString());
+                //Then reset numBuilder so the next number is created correctly
+                numBuilder.setLength(0);
+                //Finally, add Operator to output, so the order is correct when passed to infix2postfix
+                outputList.add(Character.toString(ch));
+            }
+            if (Character.isDigit(ch)) {
+                readOperand = true;
+                numBuilder.append(ch);
+                outputList.add(Character.toString(ch));
             }
 
-            //For adding numbers after last operand
-            //Empty Numbuilder in the end.
-            if (i == tokens.length - 1 && Character.isDigit(tokens[i])) {
-                tokenList.add(numBuilder.toString());
+            if (Character.toString(ch).equals(" ")) {
+                blankSpaces++;
             }
-
         }
 
-        return tokenList;
+        //After loop, check if it exited with operator as last character, or if it didn't contain any operators at all.
+        if (numOperators == 0) {
+            throw new RuntimeException(MISSING_OPERATOR);
+        } else if(!readOperand){
+            throw new RuntimeException(MISSING_OPERAND);
+        }
+
+
+        return outputList;
     }
 
     public char[] tokenize(String s) {
