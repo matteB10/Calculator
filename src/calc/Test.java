@@ -43,7 +43,7 @@ class Test {
         // Uncomment line by line to test
 
         // Tokenization ---------------------------
-        /*("1 + 10", "1 + 10");  // Arguments are input and expected output
+        t("1 + 10", "1 + 10");  // Arguments are input and expected output
         t("1+ 10", "1 + 10");   // Expected is in fact a list [ "1", "+", "10"]
         t("1 +10", "1 + 10");
         t("1+10", "1 + 10");
@@ -52,8 +52,7 @@ class Test {
         t("(1 +2) /2 *( 1+10) ", "( 1 + 2 ) / 2 * ( 1 + 10 )");
 
 
-        // Infix to postfix -----------------------
-        /*
+
         i2p("1+10", "1 10 +");
         i2p("1+2+3", "1 2 + 3 +");
         i2p("1+2-3", "1 2 + 3 -");
@@ -65,10 +64,10 @@ class Test {
         i2p("4^3*2", "4 3 ^ 2 *");
         i2p("(1+2)*3", "1 2 + 3 *");
         i2p("2^(1+1)", "2 1 1 + ^");
-        */
+
 
         // Evaluation ------------------------------
-        /*
+
         // A value
         e("123", 123);
 
@@ -114,53 +113,55 @@ class Test {
         // Exceptions -----------------------------------
         try {
             e("1 / 0 ", 0);   // 0 just a dummy
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             out.println(e.getMessage().equals(Calculator.DIV_BY_ZERO));
         }
         try {
             e("1 + 2 + ", 0);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             out.println(e.getMessage().equals(Calculator.MISSING_OPERAND));
         }
         try {
             e("12 3", 0);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             out.println(e.getMessage().equals(Calculator.MISSING_OPERATOR));
         }
         try {
             e("1 + 2)", 0);
-        } catch (IllegalArgumentException e) {
+
+        } catch (Exception e) {
             out.println(e.getMessage().equals(Calculator.MISSING_OPERATOR));
+
         }
-        */
+
 
     }
 
 
     // ------- Below are helper methods for testing NOTHING to do here -------------------
-/*
+
     // t for tokenize, a very short name, lazy, avoid typing ...
     void t(String expr, String expected) {
-        List<String> list = calculator.tokenize(expr);
+        ArrayList<String> list = calculator.tokenize(expr);
         String result = String.join(" ", list);
         out.println(result.equals(expected));
     }
 
     // Infix 2 postfix
     void i2p(String infix, String expected) {
-        List<String> tokens = calculator.tokenize(infix);
-        List<String> postfix = calculator.infix2Postfix(tokens);
+        ArrayList<String> tokens = calculator.tokenize(infix);
+        ArrayList<String> postfix = calculator.infix2Postfix(tokens);
         String result = String.join(" ", postfix);
         out.println(result.equals(expected));
     }
 
     // Evaluation
     void e(String infix, double expected) {
-        List<String> tokens = calculator.tokenize(infix);
-        List<String> postfix = calculator.infix2Postfix(tokens);
-        double result = calculator.evalPostfix(postfix);
+        ArrayList<String> tokens = calculator.tokenize(infix);
+        ArrayList<String> postfix = calculator.infix2Postfix(tokens);
+        double result = calculator.evalPostFix(postfix);
         out.println(result == expected);
     }
-    */
+
 
 }

@@ -61,6 +61,9 @@ public class CheckParen {
                 return false;
             }
         }
+        if(!stack.isEmpty()){
+            throw new RuntimeException(Calculator.MISSING_OPERATOR);
+        }
 
         return stack.isEmpty();
     }

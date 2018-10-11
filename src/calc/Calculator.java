@@ -36,12 +36,15 @@ class Calculator {
         ArrayList<String> tokens = tokenize(expr);
 
         //Check for invalid parentheses
-        if(!checkParentheses(tokens)){
-            throw new RuntimeException(MISSING_OPERATOR);
+        try {
+            checkParentheses(tokens);
+        }catch(Exception e){
+            return 0;
         }
 
         ArrayList<String> postfix = infix2Postfix(tokens);
         double result = evalPostFix(postfix);
+
         return result; // result;
     }
 
@@ -68,7 +71,7 @@ class Calculator {
     }
 
     // ------- Infix 2 Postfix ------------------------
-//Convert
+//The string convertion from infix to postfix, no caclulation.
 
     ArrayList<String> infix2Postfix(ArrayList<String> inputList){
         ArrayList<String> postFix = new ArrayList<>();
@@ -217,7 +220,9 @@ class Calculator {
                     //add operand to tokenList
                     addToTokenlist(numBuilder, tokenList, inputChars[i]);
                 }
+
                 //For adding numbers after last operand
+                //Empty Numbuilder in the end.
                 if (i == s.length() - 1 && Character.isDigit(inputChars[i])) {
                     tokenList.add(numBuilder.toString());
                 }
