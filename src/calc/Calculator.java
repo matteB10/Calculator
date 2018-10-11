@@ -37,7 +37,7 @@ class Calculator {
         ArrayList<String> tokens = controlInput(input);
 
         System.out.println(tokens.toString());
-        //Check for invalid parentheses
+        //Lastly, Check for invalid parentheses
         checkParentheses(tokens);
 
         ArrayList<String> postfix = infix2Postfix(tokens);
@@ -199,7 +199,6 @@ class Calculator {
         //ArrayList<String> tokenList = new ArrayList<>();
         StringBuilder numBuilder = new StringBuilder();
 
-
         boolean readOperand = false;
         boolean readOperator = false;
         int blankSpaces = 0;
@@ -217,6 +216,8 @@ class Calculator {
             if (i == 1 && readOperator) {
                 throw new RuntimeException(MISSING_OPERAND);
             }
+
+            //TODO: DESSA BORDE VARA ELSE IF VA?
             //Set readOperand to false, if false after loop exit, missing operand after last operator i.e (1 + 2 +)
             if (OPERATORS.contains(Character.toString(ch))) {
                 readOperand = false;
@@ -229,14 +230,26 @@ class Calculator {
                 //Finally, add Operator to output, so the order is correct when passed to infix2postfix
                 outputList.add(Character.toString(ch));
             }
+
             if (Character.isDigit(ch)) {
+                if(readOperator){
+                    blankSpaces = 0;
+                }
                 readOperand = true;
                 numBuilder.append(ch);
-                outputList.add(Character.toString(ch));
+                //outputList.add(Character.toString(ch));
             }
 
             if (Character.toString(ch).equals(" ")) {
                 blankSpaces++;
+            }
+
+            if(numBuilder.length() != 0 && i == tokens.length -1){
+                outputList.add(numBuilder.toString());
+            }
+
+            if("()".contains(Character.toString(ch))){
+                outputList.add(Character.toString(ch));
             }
         }
 
@@ -246,6 +259,8 @@ class Calculator {
         } else if(!readOperand){
             throw new RuntimeException(MISSING_OPERAND);
         }
+
+
 
 
         return outputList;
