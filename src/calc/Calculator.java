@@ -33,14 +33,12 @@ class Calculator {
         if (expr.length() == 0) {
             return NaN;
         }
-        ArrayList<String> tokens = tokenize(expr);
+        char[] input = tokenize(expr);
+        ArrayList<String> tokens = controlInput(input);
 
+        System.out.println(tokens.toString());
         //Check for invalid parentheses
-        try {
-            checkParentheses(tokens);
-        }catch(Exception e){
-            return 0;
-        }
+        checkParentheses(tokens);
 
         ArrayList<String> postfix = infix2Postfix(tokens);
         double result = evalPostFix(postfix);
@@ -196,41 +194,48 @@ class Calculator {
 
     // ---------- Tokenize -----------------------
 
-
-    public ArrayList<String> tokenize(String s) {
+    public ArrayList<String> controlInput(char[] tokens){
         StringBuilder numBuilder = new StringBuilder();
         ArrayList<String> tokenList = new ArrayList<>();
         //Split string to charArr
-        s = s.trim();
-        char[] inputChars = s.toCharArray();
-        for (int i = 0; i < s.length(); i++) {
 
-            if (inputChars[i] != ' ') {
+        for (int i = 0; i < tokens.length; i++) {
 
-                //Errorhandling
-                checkMissingOperand(i,inputChars);
 
-                //if current char is digit (and not empty) append to StringBuilder
-                if (Character.isDigit(inputChars[i])) {
-                    numBuilder.append(inputChars[i]);
+            //if current char is digit (and not empty) append to StringBuilder
+            if (Character.isDigit(tokens[i])) {
 
-                    //if operator
-                } else {
-                    //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder.
-                    //add operand to tokenList
-                    addToTokenlist(numBuilder, tokenList, inputChars[i]);
-                }
 
-                //For adding numbers after last operand
-                //Empty Numbuilder in the end.
-                if (i == s.length() - 1 && Character.isDigit(inputChars[i])) {
-                    tokenList.add(numBuilder.toString());
-                }
+
+                numBuilder.append(tokens[i]);
+                //if operator
+            }else if(Character.toString(tokens[i]).equals(" ")){
+
+
+            } else {
+
+
+                //when operator is reached, transfer StringBuilder to tokenList, empty Stringbuilder.
+                //add operand to tokenList
+                addToTokenlist(numBuilder, tokenList, tokens[i]);
             }
+
+            //For adding numbers after last operand
+            //Empty Numbuilder in the end.
+            if (i == tokens.length - 1 && Character.isDigit(tokens[i])) {
+                tokenList.add(numBuilder.toString());
+            }
+
         }
 
         return tokenList;
+    }
 
+    public char[] tokenize(String s) {
+        s = s.trim();
+        char[] inputChars = s.toCharArray();
+
+        return inputChars;
     }
     //Called in method tokenize, used for converting chars to a list of strings.
     //Numbers with more than 1 digit need to concatenate, done with stringBuilder before adding to list.

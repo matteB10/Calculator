@@ -126,13 +126,7 @@ class Test {
         } catch (Exception e) {
             out.println(e.getMessage().equals(Calculator.MISSING_OPERATOR));
         }
-        try {
-            e("1 + 2)", 0);
 
-        } catch (Exception e) {
-            out.println(e.getMessage().equals(Calculator.MISSING_OPERATOR));
-
-        }
 
 
     }
