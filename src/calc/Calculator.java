@@ -203,6 +203,7 @@ class Calculator {
         boolean readOperator = false;
         int blankSpaces = 0;
         int numOperators = 0;
+        int numOperands = 0;
         ArrayList<String> outputList = new ArrayList<>();
 
         for(int i = 0; i < tokens.length; i++){
@@ -213,7 +214,7 @@ class Calculator {
                 throw new RuntimeException(MISSING_OPERATOR);
             }
             //If first character is operator
-            if (i == 1 && readOperator) {
+            if (readOperator && numOperands == 0) {
                 throw new RuntimeException(MISSING_OPERAND);
             }
 
@@ -224,9 +225,11 @@ class Calculator {
                 readOperator = true;
                 numOperators++;
                 //Need to add digit to Stringbuilder, only does this if two digits right after one another, needed to create numbers with more than one digit
-                outputList.add(numBuilder.toString());
-                //Then reset numBuilder so the next number is created correctly
-                numBuilder.setLength(0);
+                if(numBuilder.length() > 0) {
+                    outputList.add(numBuilder.toString());
+                    //Then reset numBuilder so the next number is created correctly
+                    numBuilder.setLength(0);
+                }
                 //Finally, add Operator to output, so the order is correct when passed to infix2postfix
                 outputList.add(Character.toString(ch));
             }
@@ -236,6 +239,7 @@ class Calculator {
                     blankSpaces = 0;
                 }
                 readOperand = true;
+                numOperands++;
                 numBuilder.append(ch);
                 //outputList.add(Character.toString(ch));
             }
@@ -244,19 +248,24 @@ class Calculator {
                 blankSpaces++;
             }
 
-            if(numBuilder.length() != 0 && i == tokens.length -1){
-                outputList.add(numBuilder.toString());
+            //Kolla parenteser
+            if("()".contains(Character.toString(ch))){
+                if(numBuilder.length() > 0) {
+                    outputList.add(numBuilder.toString());
+                    numBuilder.setLength(0);
+                }
+                outputList.add(Character.toString(ch));
             }
 
-            if("()".contains(Character.toString(ch))){
-                outputList.add(Character.toString(ch));
+            if(numBuilder.length() != 0 && i == tokens.length -1){
+                outputList.add(numBuilder.toString());
             }
         }
 
         //After loop, check if it exited with operator as last character, or if it didn't contain any operators at all.
-        if (numOperators == 0) {
+        /*if (numOperators == 0) {
             throw new RuntimeException(MISSING_OPERATOR);
-        } else if(!readOperand){
+        } else */if(!readOperand){
             throw new RuntimeException(MISSING_OPERAND);
         }
 
@@ -272,6 +281,7 @@ class Calculator {
 
         return inputChars;
     }
+    /*
     //Called in method tokenize, used for converting chars to a list of strings.
     //Numbers with more than 1 digit need to concatenate, done with stringBuilder before adding to list.
     private void addToTokenlist(StringBuilder numBuilder, ArrayList<String> tokenList, char element) {
@@ -282,7 +292,9 @@ class Calculator {
             numBuilder.setLength(0);
             tokenList.add(Character.toString(element));
         }
-    }
+    }*/
+
+
     //Do all calculations
     //method parameter: a list with the expression in postfix order
     //returns the result (a double) of the calculation.
@@ -308,7 +320,7 @@ class Calculator {
         return stack.pop();
     }
 
-
+/*
     //Check if input is invalid and operand is missing, throws Exception if
     //two operators in sequence or if expression starts/ends with operator.
     void checkMissingOperand(int i, char[] inputChars){
@@ -328,4 +340,5 @@ class Calculator {
         }
 
     }
+    */
 }

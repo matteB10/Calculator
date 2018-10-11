@@ -27,7 +27,7 @@ class REPL {
         while (true) {
             out.print("> ");
             String input = scan.nextLine();
-            //String input = "(1+2)";
+            //String input = "(+ 2)";
             try {
                 double result = calculator.eval(input);
                 out.println(result);
